@@ -42,9 +42,9 @@ jobs:
       - name: 'GCP Auth'
         uses: 'google-github-actions/auth@v0.4.0'
         with:
-          project_id: ${{ vars.PROJECT_ID}}
-          workload_identity_provider: ${{ vars.WORKLOAD_IDENTITY_PROVIDER}}
-          service_account: ${{ vars.SERVICE_ACCOUNT}}
+          project_id: 'capable-hash-432501-a6'
+          workload_identity_provider: 'https://iam.googleapis.com/projects/815942598901/locations/global/workloadIdentityPools/githubmlops/providers/github-mlops-provider'
+          service_account: '815942598901-compute@developer.gserviceaccount.com'
 
       - name: Compile
         run: |
@@ -57,4 +57,4 @@ jobs:
           -H "Authorization: Bearer $(gcloud auth print-access-token)" \
           -F tags=test \
           -F content=@pipeline.yaml \
-          ${{ vars.REPO_URL}}
+          https://us-east4-kfp.pkg.dev/capable-hash-432501-a6/mlops-reg
