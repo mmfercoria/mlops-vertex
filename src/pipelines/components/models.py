@@ -22,8 +22,8 @@ def decision_tree(
     train = pd.read_csv(train_dataset.path)
 
     X_train, X_test, y_train, y_test = train_test_split(
-        train.drop("Species", axis=1),
-        train["Species"],
+        train.drop("target", axis=1),
+        train["target"],
         test_size=0.2,
         random_state=42,
     )
@@ -59,8 +59,8 @@ def random_forest(
     train = pd.read_csv(train_dataset.path)
 
     X_train, X_test, y_train, y_test = train_test_split(
-        train.drop("Species", axis=1),
-        train["Species"],
+        train.drop("target", axis=1),
+        train["target"],
         test_size=0.2,
         random_state=42,
     )
