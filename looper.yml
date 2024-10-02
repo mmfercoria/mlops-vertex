@@ -1,0 +1,29 @@
+triggers:
+  # Trigger cuando se haga un push al repositorio
+  - push: true
+
+pipeline:
+  steps:
+    - name: compile-and-run-vertex-pipeline
+      command: |
+        python src/pipelines/iris_pipeline.py
+    
+    - name: monitor-vertex-pipeline
+      command: |
+        from google.cloud import aiplatform
+        aiplatform.init(project="815942598901", location="us-east4")
+        pipeline_job = aiplatform.PipelineJob.get('projects/815942598901/locations/us-east4/pipelineJobs/iris-pipeline-job-12786c64-01d6-4ba9-b294-22646872f8a9') 
+        if pipeline_job.state == "SUCCEEDED":
+          print("Pipeline completed successfully")
+        else:
+          raise Exception("Pipeline failed")
+
+    - name: notify-success
+      command: |
+        echo "Pipeline completado con éxito. El modelo ha sido registrado en Vertex AI Model Registry."
+      condition: monitor-vertex-pipeline.success == true
+
+    - name: notify-failure
+      command: |
+        echo "El pipeline ha fallado."
+      condition: monitor-vertex-pipeline.success == false
